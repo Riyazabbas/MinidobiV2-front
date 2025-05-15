@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ESP32 LED Control + Light</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    #lightDisplay { margin-top: 20px; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <h1>ESP32 LED Controller</h1>
+  <button id="toggleBtn">Turn ON</button>
+  <p id="lightDisplay">Light: --</p>
+
+  <script>
+    const backend = "https://minidobiv2-back-1.onrender.com";  // replace with yours
+    let ledOn = false;
+
+    document.getElementById("toggleBtn").addEventListener("click", async () => {
+      ledOn = !ledOn;
+      await fetch(backend + "/toggle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: ledOn })
+      });
+      document.getElementById("toggleBtn").innerText = ledOn ? "Turn OFF" : "Turn ON";
+    });
+
+    async function getLight() {
+      const res = await fetch(backend + "/light");
+      const data = await res.json();
+      document.getElementById("lightDisplay").innerText = "Light: " + data.value;
+    }
+
+    setInterval(getLight, 2000);
+  </script>
+</body>
+</html>
