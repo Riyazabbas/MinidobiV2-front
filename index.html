@@ -10,25 +10,8 @@
   <button onclick="setLED('off')">Turn OFF</button>
 
   <script>
-    // 1. Send location from URL to backend
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const location = urlParams.get('location');
-
-    if (location) {
-      fetch('https://minidobiv2-back-2.onrender.com/set-location', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ location })
-      })
-      .then(res => res.json())
-      .then(data => console.log('Location sent:', data))
-      .catch(err => console.error('Error sending location:', err));
-    }
-
-    // 2. Function to toggle LED status
     function setLED(state) {
-      fetch('https://minidobiv2-back-2.onrender.com/toggle', {
+      fetch('https://minidobi.onrender.com/toggle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: state })
